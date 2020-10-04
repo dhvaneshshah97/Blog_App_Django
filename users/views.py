@@ -8,8 +8,8 @@ def register(request):
         if form.is_valid():     ## Django performs backend checks
             form.save()
             username = form.cleaned_data.get('username') ## validated username will store in "cleaned_data" dictionary
-            messages.success(request, f"Account created for {username}!")
-            return redirect('blog-home')
+            messages.success(request, f"Your account has been created! You are now able to log in")
+            return redirect('login')
     else:
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
