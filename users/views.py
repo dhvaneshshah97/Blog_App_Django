@@ -1,6 +1,15 @@
-from django.shortcuts import render
-from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import UserRegisterForm
 
 def register(request):
-    form = UserCreationForm()
+    if request.method == "POST":
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():     ## Django performs backend checks
+            form.save()
+            username = form.cleaned_data.get('username') ## validated username will store in "cleaned_data" dictionary
+            messages.success(request, f"Account created for {username}!")
+            return redirect('blog-home')
+    else:
+        form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
